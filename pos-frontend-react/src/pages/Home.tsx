@@ -4,6 +4,8 @@ import { GiSandsOfTime } from 'react-icons/gi';
 import Greetings from '../components/home/Greetings';
 import MiniCard from '../components/home/MiniCard';
 import BottomNav from '../components/shared/BottomNav';
+import RecentOrders from '../components/home/RecentOrders';
+import PopularDishes from '../components/home/PopularDishes';
 
 const Home = () => {
   return (
@@ -25,9 +27,12 @@ const Home = () => {
             footerNum={3.6}
           />
         </div>
+        <RecentOrders />
       </div>
       {/* Right Side */}
-      <div className='flex-[2] bg-[#1a1a1a]'></div>
+      <div className='flex-[2] bg-[#1a1a1a]'>
+        <PopularDishes />
+      </div>
       <BottomNav />
     </section>
   );

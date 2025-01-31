@@ -16,10 +16,8 @@ const MiniCard = ({ title, icon: Icon, number, footerNum }: MiniCardProps) => {
         </h1>
         <button
           className={`${
-            title === 'Total Earnings'
-              ? 'bg-[#02ca3a] p-3 rounded-lg text-[#f5f5f5] text-2xl'
-              : 'bg-[#f6b100] p-3 rounded-lg text-[#f5f5f5] text-2xl'
-          }`}
+            title === 'Total Earnings' ? 'bg-[#02ca3a]' : 'bg-[#f6b100] '
+          } p-3 rounded-lg text-[#f5f5f5] text-2xl`}
         >
           <Icon size={30} />
         </button>

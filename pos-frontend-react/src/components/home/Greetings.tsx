@@ -46,7 +46,7 @@ const Greetings = () => {
         </p>
       </div>
       <div className='flex flex-col items-start'>
-        <span className='text-[#f5f5f5] text-3xl font-bold tracking-wide w-[8rem]'>
+        <span className='text-[#f5f5f5] text-3xl font-bold tracking-wide w-[130px]'>
           {formatTime(dateTime)}
         </span>
         <span className='text-[#ababab] text-sm'>{formatDate(dateTime)}</span>
