@@ -23,7 +23,9 @@ const MiniCard = ({ title, icon: Icon, number, footerNum }: MiniCardProps) => {
         </button>
       </div>
       <div>
-        <span className='text-[#f5f5f5] text-4xl font-bold mt-5'>{number}</span>
+        <span className='text-[#f5f5f5] text-4xl font-bold mt-5'>
+          {title === 'Total Earnings' ? `€${number}` : number}
+        </span>
         <p className='text-[#f5f5f5] text-lg mt-2'>
           {' '}
           <span className='text-[#02ca3a]'>{footerNum}</span> since yesterday

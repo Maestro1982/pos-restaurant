@@ -18,8 +18,8 @@ const OrderList = () => {
             Table Nr: 3
           </span>
         </div>
-        <div className='flex flex-col items-start gap-1'>
-          <span className='text-green-600 px-4'>
+        <div className='flex flex-col items-end gap-2'>
+          <span className='text-green-600'>
             <FaCheckDouble className='inline mr-2' /> Ready
           </span>
           <span className='text-[#ababab] text-sm'>
