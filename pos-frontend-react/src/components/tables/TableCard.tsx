@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { FaPerson } from 'react-icons/fa6';
 
 import { getRandomBG } from '../../utils';
@@ -11,10 +12,18 @@ interface TableCardProps {
 }
 
 const TableCard = ({ key, name, status, initial, seats }: TableCardProps) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    if (status === 'Booked') return;
+    navigate('/menu');
+  };
+
   return (
     <div
       key={key}
       className='w-[300px] bg-[#262626] hover:bg-[#2c2c2c] p-4 rounded-lg cursor-pointer'
+      onClick={handleClick}
     >
       <div className='flex items-center justify-between px-1'>
         <h1 className='text-[#f5f5f5] text-xl font-semibold'>{name}</h1>
