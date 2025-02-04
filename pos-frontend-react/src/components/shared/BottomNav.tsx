@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { FaHome } from 'react-icons/fa';
 import { MdOutlineReorder, MdTableBar } from 'react-icons/md';
 import { CiCircleMore } from 'react-icons/ci';
@@ -7,11 +8,16 @@ import { BiSolidDish } from 'react-icons/bi';
 
 import Modal from './Modal';
 
+import { setCustomer } from '../../redux/slices/customerSlice';
+
 const BottomNav = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [guestCount, setGuestCount] = useState<number>(0);
+  const [name, setName] = useState<string>('');
+  const [phone, setPhone] = useState<string>('');
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
@@ -26,6 +32,12 @@ const BottomNav = () => {
   };
 
   const isActive = (path: string) => location.pathname === path;
+
+  const handleCreateOrder = () => {
+    // send data to the store
+    dispatch(setCustomer({ name, phone, guests: guestCount }));
+    navigate('/tables');
+  };
 
   return (
     <div className='fixed bottom-0 left-0 right-0 bg-[#262626] p-2 flex justify-around h-16'>
@@ -61,6 +73,7 @@ const BottomNav = () => {
         <span>More</span>
       </button>
       <button
+        disabled={isActive('/tables') || isActive('/menu')}
         className='absolute bottom-6 bg-[#f6b100] text-[#f5f5f5] rounded-full p-3 items-center cursor-pointer'
         onClick={openModal}
       >
@@ -76,6 +89,8 @@ const BottomNav = () => {
               type='text'
               placeholder='Enter customer name...'
               className='bg-transparent flex-1 text-white focus:outline-none'
+              value={name}
+              onChange={(e) => setName(e.target.value)}
             />
           </div>
         </div>
@@ -88,6 +103,8 @@ const BottomNav = () => {
               type='number'
               placeholder='+32 0485 12 34 56'
               className='bg-transparent flex-1 text-white focus:outline-none'
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
             />
           </div>
         </div>
@@ -117,7 +134,7 @@ const BottomNav = () => {
         </div>
         <button
           className='w-full bg-[#f6b100] text-[#f5f5f5] rounded-lg py-3 mt-8 cursor-pointer hover:bg-yellow-700'
-          onClick={() => navigate('/tables')}
+          onClick={handleCreateOrder}
         >
           Create Order
         </button>

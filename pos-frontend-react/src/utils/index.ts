@@ -40,3 +40,40 @@ export const getBgColor = () => {
   const color = bgArr[randomBg];
   return { backgroundColor: color };
 };
+
+export const getAvatarName = (name: string) => {
+  if (!name) return '';
+
+  return name
+    .split(' ')
+    .map((word) => word[0])
+    .join('')
+    .toUpperCase();
+};
+
+export const formatDate = (date: Date): string => {
+  const months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+  return `${months[date.getMonth()]} ${String(date.getDate()).padStart(
+    2,
+    '0'
+  )}, ${date.getFullYear()}`;
+};
+
+export const formatTime = (date: Date): string => {
+  return `${String(date.getHours()).padStart(2, '0')}:${String(
+    date.getMinutes()
+  ).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}`;
+};
