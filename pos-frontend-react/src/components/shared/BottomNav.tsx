@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { FaHome } from 'react-icons/fa';
 import { MdOutlineReorder, MdTableBar } from 'react-icons/md';
 import { CiCircleMore } from 'react-icons/ci';
@@ -9,6 +9,7 @@ import Modal from './Modal';
 
 const BottomNav = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [guestCount, setGuestCount] = useState<number>(0);
   const openModal = () => setIsModalOpen(true);
@@ -24,30 +25,38 @@ const BottomNav = () => {
     setGuestCount((prev) => prev + 1);
   };
 
+  const isActive = (path: string) => location.pathname === path;
+
   return (
     <div className='fixed bottom-0 left-0 right-0 bg-[#262626] p-2 flex justify-around h-16'>
       <button
-        className='text-[#f5f5f5] bg-[#343434] w-[12rem] rounded-[1.25rem] flex items-center justify-center cursor-pointer'
+        className={`w-[300px] rounded-[1.25rem] flex items-center justify-center cursor-pointer ${
+          isActive('/') ? 'text-[#f5f5f5] bg-[#343434]' : 'text-[#ababab]'
+        }`}
         onClick={() => navigate('/')}
       >
         <FaHome className='inline mr-4' size={20} />
         <span>Home</span>
       </button>
       <button
-        className='text-[#f5f5f5] bg-[#343434] w-[12rem] rounded-[1.25rem] flex items-center justify-center cursor-pointer'
+        className={`w-[300px] rounded-[1.25rem] flex items-center justify-center cursor-pointer ${
+          isActive('/orders') ? 'text-[#f5f5f5] bg-[#343434]' : 'text-[#ababab]'
+        }`}
         onClick={() => navigate('/orders')}
       >
         <MdOutlineReorder className='inline mr-4' size={20} />
         <span>Orders</span>
       </button>
       <button
-        className='text-[#f5f5f5] bg-[#343434] w-[12rem] rounded-[1.25rem] flex items-center justify-center cursor-pointer'
+        className={`w-[300px] rounded-[1.25rem] flex items-center justify-center cursor-pointer ${
+          isActive('/tables') ? 'text-[#f5f5f5] bg-[#343434]' : 'text-[#ababab]'
+        }`}
         onClick={() => navigate('/tables')}
       >
         <MdTableBar className='inline mr-4' size={20} />
         <span>Tables</span>
       </button>
-      <button className='text-[#f5f5f5] bg-[#343434] w-[12rem] rounded-[1.25rem] flex items-center justify-center cursor-pointer'>
+      <button className='text-[#ababab] font-bold w-[300px] flex items-center justify-center cursor-pointer'>
         <CiCircleMore className='inline mr-4' size={20} />
         <span>More</span>
       </button>

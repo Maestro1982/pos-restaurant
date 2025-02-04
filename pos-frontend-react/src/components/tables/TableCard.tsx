@@ -42,8 +42,8 @@ const TableCard = ({ key, name, status, initial, seats }: TableCardProps) => {
           {initial}
         </span>
       </div>
-      <div className='text-white flex items-center'>
-        <FaPerson size={25} />
+      <div className='text-[#ababab] flex items-center'>
+        <FaPerson size={20} />
         <span className='ml-1'>{seats}</span>
       </div>
     </div>
