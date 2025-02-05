@@ -1,13 +1,22 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { GrRadialSelected } from 'react-icons/gr';
 import { FaShoppingCart } from 'react-icons/fa';
 
 import { menus } from '../../constants/constants';
+import { addItem } from '../../redux/slices/cartSlice';
+
+interface MenuItem {
+  id: number;
+  name: string;
+  price: number;
+}
 
 const MenuContainer = () => {
   const [selected, setSelected] = useState(menus[0]);
   const [itemCount, setItemCount] = useState<number>(0);
   const [itemId, setItemId] = useState<number | null>(null);
+  const dispatch = useDispatch();
 
   const decrementItemCount = (id: number) => {
     setItemId(id);
@@ -18,6 +27,21 @@ const MenuContainer = () => {
   const incrementItemCount = (id: number) => {
     setItemId(id);
     setItemCount((prev) => prev + 1);
+  };
+
+  const handleAddItemToCart = (item: MenuItem) => {
+    if (itemCount === 0) return;
+
+    const { name, price } = item;
+    const newObj = {
+      id: new Date(),
+      name,
+      pricePerQuantity: price,
+      quantity: itemCount,
+      price: price * itemCount,
+    };
+    dispatch(addItem(newObj));
+    setItemCount(0);
   };
 
   return (
@@ -62,13 +86,16 @@ const MenuContainer = () => {
                 <h1 className='text-[#f5f5f5] text-lg font-semibold'>
                   {item.name}
                 </h1>
-                <button className='bg-[#2e4a40] text-[#02ca3a] p-2 rounded-lg'>
+                <button
+                  onClick={() => handleAddItemToCart(item)}
+                  className='bg-[#2e4a40] text-[#02ca3a] p-2 rounded-lg cursor-pointer'
+                >
                   <FaShoppingCart size={20} />
                 </button>
               </div>
               <div className='flex items-center justify-between w-full'>
                 <span className='text-[#f5f5f5] text-xl font-bold'>
-                  €{item.price}
+                  €{item.price.toFixed(2)}
                 </span>
                 <div className='flex items-center justify-between bg-[#1f1f1f] px-4 py-3 rounded-lg gap-6'>
                   <button
