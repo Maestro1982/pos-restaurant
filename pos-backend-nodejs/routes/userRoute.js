@@ -1,12 +1,15 @@
 import express from 'express';
 
 import userController from '../controllers/userController.js';
+import isVerifiedUser from '../middleware/tokenVerification.js';
 
 const router = express.Router();
-const { register, login } = userController;
+const { register, login, getUserData } = userController;
 
 // Authentication Routes
 router.route('/register').post(register);
 router.route('/login').post(login);
+
+router.route('/').get(isVerifiedUser, getUserData);
 
 export default router;

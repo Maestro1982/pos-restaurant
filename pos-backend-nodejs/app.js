@@ -1,5 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
 
 dotenv.config(); // load env variables
 
@@ -13,8 +14,9 @@ const app = express();
 const PORT = config.port;
 connectDB();
 
-// Middleware
+// Middlewares
 app.use(express.json()); // Parse incoming request into json format
+app.use(cookieParser());
 
 // Root Endpoint
 app.get('/', (req, res) => {
