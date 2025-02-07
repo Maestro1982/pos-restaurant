@@ -11,6 +11,7 @@ import globalErrorHandler from './middleware/globalErrorHandler.js';
 
 import userRoute from './routes/userRoute.js';
 import orderRoute from './routes/orderRoute.js';
+import tableRoute from './routes/tableRoute.js';
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.get('/', (req, res) => {
 // Other Endpoints
 app.use('/api/user', userRoute);
 app.use('/api/order', orderRoute);
+app.use('/api/tables', tableRoute);
 
 // Global Error Handler
 app.use(globalErrorHandler);
