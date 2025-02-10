@@ -399,3 +399,5 @@ export const menus = [
   },
   { id: 8, name: 'Salads', bgColor: '#AA336A', icon: '🥗', items: salads },
 ];
+
+export const roles = ['Waiter', 'Cashier', 'Admin'];
