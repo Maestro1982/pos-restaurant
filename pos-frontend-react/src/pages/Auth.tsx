@@ -54,7 +54,7 @@ const Auth = () => {
           <span className='text-sm text-[#ababab]'>
             {isRegistered
               ? 'Already have an account?'
-              : 'Don&apos;t have an account?'}
+              : "Don't have an account?"}
             <a
               onClick={() => setIsRegistered(!isRegistered)}
               href='#'

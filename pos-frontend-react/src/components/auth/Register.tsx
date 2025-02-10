@@ -8,7 +8,7 @@ const Register = () => {
     email: '',
     phone: '',
     password: '',
-    role: '',
+    role: 'Cashier',
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
