@@ -1,10 +1,14 @@
 import { FaSearch } from 'react-icons/fa';
 import { FaUserCircle } from 'react-icons/fa';
 import { FaBell } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
+
+import { RootState } from '../../redux/store';
 
 import logo from '../../assets/images/logo.png';
 
 const Header = () => {
+  const userData = useSelector((state: RootState) => state.user);
   return (
     <div className='flex items-center justify-between py-4 px-8 bg-[#1a1a1a]'>
       {/* Logo */}
@@ -33,9 +37,11 @@ const Header = () => {
           <FaUserCircle className='text-[#f5f5f5] text-2xl' />
           <div className='flex flex-col items-start'>
             <span className='text-base text-[#f5f5f5] font-semibold'>
-              John Doe
+              {userData.name || 'TEST USER'}
             </span>
-            <span className='text-xs text-[#ababab] font-medium'>Admin</span>
+            <span className='text-xs text-[#ababab] font-medium'>
+              {userData.role || 'Role'}
+            </span>
           </div>
         </div>
       </div>

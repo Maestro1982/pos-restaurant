@@ -1,6 +1,25 @@
 import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { enqueueSnackbar } from 'notistack';
+import { AxiosError } from 'axios';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
+import { login } from '../../https';
+import { setUser } from '../../redux/slices/userSlice';
+
+interface AuthData {
+  email: string;
+  password: string;
+}
+
+interface ErrorResponse {
+  message: string;
+}
 
 const Login = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -12,8 +31,25 @@ const Login = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(formData);
+    loginMutation.mutate(formData);
   };
+
+  const loginMutation = useMutation({
+    mutationFn: (reqData: AuthData) => login(reqData),
+    onSuccess: (res) => {
+      const { data } = res;
+      const { _id, name, email, phone, role } = data.data;
+      dispatch(setUser({ _id, name, email, phone, role }));
+      navigate('/');
+    },
+    onError: (error: AxiosError<ErrorResponse>) => {
+      if (error.response) {
+        enqueueSnackbar(error.response.data.message, { variant: 'error' });
+      } else {
+        enqueueSnackbar('An unexpected error occurred', { variant: 'error' });
+      }
+    },
+  });
 
   return (
     <div>
