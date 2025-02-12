@@ -1,14 +1,38 @@
 import { FaSearch } from 'react-icons/fa';
 import { FaUserCircle } from 'react-icons/fa';
 import { FaBell } from 'react-icons/fa';
-import { useSelector } from 'react-redux';
+import { IoLogOut } from 'react-icons/io5';
+import { useDispatch, useSelector } from 'react-redux';
+import { useMutation } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 
 import { RootState } from '../../redux/store';
+import { removeUser } from '../../redux/slices/userSlice';
+import { logout } from '../../https';
 
 import logo from '../../assets/images/logo.png';
 
 const Header = () => {
   const userData = useSelector((state: RootState) => state.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const logoutMutation = useMutation({
+    mutationFn: () => logout(),
+    onSuccess: (data) => {
+      console.log(data);
+      dispatch(removeUser());
+      navigate('/auth');
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
+  const handleLogout = () => {
+    logoutMutation.mutate();
+  };
+
   return (
     <div className='flex items-center justify-between py-4 px-8 bg-[#1a1a1a]'>
       {/* Logo */}
@@ -43,6 +67,11 @@ const Header = () => {
               {userData.role || 'Role'}
             </span>
           </div>
+          <IoLogOut
+            onClick={handleLogout}
+            className='text-[#f5f5f5] ml-2'
+            size={40}
+          />
         </div>
       </div>
     </div>

@@ -1,8 +1,29 @@
 import { useState } from 'react';
+import { AxiosError } from 'axios';
+import { enqueueSnackbar } from 'notistack';
+import { useMutation } from '@tanstack/react-query';
 
 import { roles } from '../../constants/constants';
 
-const Register = () => {
+import { register } from '../../https';
+
+interface RegisterProps {
+  setIsRegistered: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+interface RegisterData {
+  name: string;
+  phone: string;
+  email: string;
+  password: string;
+  role: string;
+}
+
+interface ErrorResponse {
+  message: string;
+}
+
+const Register = ({ setIsRegistered }: RegisterProps) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -21,8 +42,33 @@ const Register = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(formData);
+    registerMutation.mutate(formData);
   };
+
+  const registerMutation = useMutation({
+    mutationFn: (reqData: RegisterData) => register(reqData),
+    onSuccess: (res) => {
+      const { data } = res;
+      enqueueSnackbar(data.message, { variant: 'success' });
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        password: '',
+        role: 'Cashier',
+      });
+      setTimeout(() => {
+        setIsRegistered(false);
+      }, 1500);
+    },
+    onError: (error: AxiosError<ErrorResponse>) => {
+      if (error.response) {
+        enqueueSnackbar(error.response.data.message, { variant: 'error' });
+      } else {
+        enqueueSnackbar('An unexpected error occurred', { variant: 'error' });
+      }
+    },
+  });
 
   return (
     <div>
@@ -65,7 +111,7 @@ const Register = () => {
           </label>
           <div className='flex items-center rounded-lg p-5 px-4 bg-[#1f1f1f]'>
             <input
-              type='number'
+              type='text'
               name='phone'
               placeholder='Enter employee phone'
               className='flex-1 bg-transparent text-white focus:outline-none'
@@ -113,7 +159,7 @@ const Register = () => {
 
         <button
           type='submit'
-          className='w-full mt-6 py-3 text-lg bg-yellow-400 text-gray-900 font-bold rounded-lg cursor-pointer'
+          className='w-full mt-6 py-3 text-lg bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold rounded-lg cursor-pointer transition-colors'
         >
           Sign Up
         </button>
