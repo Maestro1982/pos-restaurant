@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 
 import './App.css';
 
-import { Home, Auth, Orders, Tables, Menu } from './pages';
+import { Home, Auth, Orders, Tables, Menu, Dashboard } from './pages';
 
 import { RootState } from './redux/store';
 import useLoadData from './hooks/useLoadData';
@@ -60,6 +60,14 @@ function Layout() {
           element={
             <ProtectedRoutes>
               <Menu />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path='/dashboard'
+          element={
+            <ProtectedRoutes>
+              <Dashboard />
             </ProtectedRoutes>
           }
         />
