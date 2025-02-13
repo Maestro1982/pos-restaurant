@@ -37,7 +37,7 @@ app.get('/', (req, res) => {
 // Other Endpoints
 app.use('/api/user', userRoute);
 app.use('/api/order', orderRoute);
-app.use('/api/tables', tableRoute);
+app.use('/api/table', tableRoute);
 
 // Global Error Handler
 app.use(globalErrorHandler);

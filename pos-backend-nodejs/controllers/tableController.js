@@ -5,21 +5,31 @@ import Table from '../models/tableModel.js';
 
 const addTable = async (req, res, next) => {
   try {
-    const { tableNr } = req.body;
+    const { tableNr, seats } = req.body;
 
-    if (!tableNr) {
-      const error = createHttpError(404, 'Please provide a table number!');
+    // Validate required fields
+    if (!tableNr || seats === undefined) {
+      const error = createHttpError(
+        400,
+        'Please provide both table number and number of seats!'
+      );
+      return next(error);
+    }
+
+    // Ensure seats is a non-negative number
+    if (seats < 0) {
+      const error = createHttpError(400, 'Number of seats cannot be negative!');
       return next(error);
     }
 
     const isTablePresent = await Table.findOne({ tableNr });
 
     if (isTablePresent) {
-      const error = createHttpError(404, 'Table already exists!');
+      const error = createHttpError(400, 'Table already exists!');
       return next(error);
     }
 
-    const newTable = new Table({ tableNr });
+    const newTable = new Table({ tableNr, seats });
     await newTable.save();
 
     res.status(201).json({
@@ -34,8 +44,10 @@ const addTable = async (req, res, next) => {
 
 const updateTable = async (req, res, next) => {
   try {
+    console.log('Incoming request:', req.body); // 🔍 Debug request payload
+
     const { id } = req.params;
-    const { status, orderId } = req.body;
+    const { status, currentOrder } = req.body;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
       const error = createHttpError(404, 'Invalid ID!');
@@ -44,7 +56,7 @@ const updateTable = async (req, res, next) => {
 
     const table = await Table.findByIdAndUpdate(
       id,
-      { status, currentOrder: orderId },
+      { status, currentOrder },
       { new: true }
     );
 
@@ -59,6 +71,7 @@ const updateTable = async (req, res, next) => {
       data: table,
     });
   } catch (error) {
+    console.error('Server Error:', error); // 🔥 Log the exact error
     next(error);
   }
 };
@@ -89,7 +102,10 @@ const deleteTable = async (req, res, next) => {
 
 const getTables = async (req, res, next) => {
   try {
-    const tables = await Table.find();
+    const tables = await Table.find().populate({
+      path: 'currentOrder',
+      select: 'customerDetails',
+    });
 
     if (!tables) {
       const error = createHttpError(404, 'Tables not found!');

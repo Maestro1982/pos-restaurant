@@ -5,6 +5,7 @@ import { FaHome } from 'react-icons/fa';
 import { MdOutlineReorder, MdTableBar } from 'react-icons/md';
 import { CiCircleMore } from 'react-icons/ci';
 import { BiSolidDish } from 'react-icons/bi';
+import { enqueueSnackbar } from 'notistack';
 
 import Modal from './Modal';
 
@@ -34,8 +35,21 @@ const BottomNav = () => {
   const isActive = (path: string) => location.pathname === path;
 
   const handleCreateOrder = () => {
-    // send data to the store
+    // Ensure the necessary fields are filled
+    if (!name || !phone || guestCount <= 0) {
+      enqueueSnackbar(
+        'Please fill in all fields and select the correct number of guests!',
+        {
+          variant: 'error',
+        }
+      );
+      return;
+    }
+
+    // Dispatch the customer details to Redux store
     dispatch(setCustomer({ name, phone, guests: guestCount }));
+
+    // Navigate to tables page
     navigate('/tables');
   };
 

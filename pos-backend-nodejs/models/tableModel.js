@@ -6,7 +6,15 @@ const tableSchema = new mongoose.Schema({
     type: String,
     default: 'Available',
   },
-  currentOrder: { type: mongoose.Schema.Types.ObjectId, ref: 'Order' },
+  seats: { type: Number, required: true },
+  /* currentOrder: { type: mongoose.Schema.Types.ObjectId, ref: 'Order' }, */
+  currentOrder: {
+    customerDetails: {
+      name: { type: String },
+      phone: { type: String },
+      guests: { type: Number },
+    },
+  },
 });
 
 const Table = mongoose.model('Table', tableSchema);

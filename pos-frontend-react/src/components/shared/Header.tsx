@@ -37,7 +37,10 @@ const Header = () => {
   return (
     <div className='flex items-center justify-between py-4 px-8 bg-[#1a1a1a]'>
       {/* Logo */}
-      <div className='flex items-center gap-2'>
+      <div
+        onClick={() => navigate('/')}
+        className='flex items-center gap-2 cursor-pointer'
+      >
         <img src={logo} alt='logo' className='size-8' />
         <span className='text-lg font-semibold text-[#f5f5f5]'>
           <span className='uppercase mr-1'>pos</span>
